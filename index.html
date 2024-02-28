@@ -6,39 +6,52 @@
     <!-- Import Styles -->
     <link rel="stylesheet" href="./assets/styles.css" />
     <!-- Import Vue.js -->
-    <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
     <div id="app">
       <div class="nav-bar"></div>
-      <div class="cart">Cart({{ cart }})</div>
+
+      <div class="cart">
+        Cart({{ cart }})
+      </div>
+      
       <div class="product-display">
         <div class="product-container">
           <div class="product-image">
-            <img :src="image">
-          
-          
+             <img :class="{ 'out-of-stock-img': !inStock }" v-bind:src="image">
           </div>
           <div class="product-info">
             <h1>{{ product }}</h1>
-            <p>{{ description }}</p>
-            <p v-if="onSale">On Sale</p>
-            <p v-if="inventory > 10">In Stock</p>
-            <p v-else-if="inventory <= 10 && inventory > 0">Almost Sold Out!</p>
-            <p v-else>Out of Stock</p>
-            <ul>
-              <li v-for="detail in details">{{ detail }}</li>
-            </ul>
-            <div v-for="variant in variants" :key="variant.id">{{ variant.color }}</div>
-<li v-for="size in sizes">{{ size }}</li>
-<button class="button" @click="addToCart" @mousover="updateImage(variant.image)">Add to Cart</button>
-<button class="button" @click="removeFromCart">Remove Item</button>
-<p>Visit <a v-bind:href="url">VueMastery.com</a> for more</p>
-          </div>
-        </div>
-      </div>
-    </div>
+             
+             <p v-if="inventory > 10">In Stock</p>
+             <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
+             <p v-else>Out of Stock</p>
+             <!--Another way of conditional showing
+              <p v-show="inStock">In Stock</p>
+            -->
+             <p v-show="onSale">On Sale</p>
 
+             <p>{{ description }}</p>
+             <ul><li v-for="detail in details">{{ detail}}</li>
+            </ul>
+           
+            <div v-for="variant in variants" :key="variant.id" @mouseover="updateImage(variant.image)" class="color-circle" :style="{ backgroundColor: variant.color }"></div>
+            
+            <ul>
+            <li v-for="size in sizes"> {{ size }} </li> 
+            </ul>
+           <button class="button" :class="{ disabledButton: !inStock }" @click="addToCart"> Add to Cart </button>
+           <button class="button" @click="removeFromCart"> Remove Item </button>
+
+
+             <p>Visit <a :href="url">VueMastery.com</a> for more</p>
+             
+          </div>
+          
+    </div>
+  </div>
+</div>
     <!-- Import App -->
     <script src="./main.js"></script>
 
@@ -46,5 +59,6 @@
     <script>
       const mountedApp = app.mount('#app')
     </script>
+
   </body>
 </html>
