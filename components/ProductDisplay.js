@@ -72,7 +72,11 @@ app.component('product-display', {
           },
         updateVariant(index) {
             this.selectedVariant = index
+        },
+        addReview(review) {
+          this.reviews.push(review)
         }
+    },
     },
     computed: {
         title() {
